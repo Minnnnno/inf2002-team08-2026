@@ -7,8 +7,21 @@
   <meta name="description" content="Clarity is an interactive HCI prototype for making informed privacy choices while chatting.">
   <title>Clarity — Your words. Your choice.</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <script>try{var t=localStorage.getItem('clarity.theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.dataset.theme='dark';}catch(e){}</script>
+  <script>
+    try {
+      var t = localStorage.getItem('clarity.theme');
+      if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.dataset.theme = 'dark';
+      }
+      var p = localStorage.getItem('clarity.colourPreset');
+      document.documentElement.dataset.colourPreset =
+        ['default', 'protan', 'deutan', 'tritan', 'neutral'].includes(p) ? p : 'default';
+    } catch (e) {
+      document.documentElement.dataset.colourPreset = 'default';
+    }
+  </script>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="colour-settings.css">
   <script src="core.js" defer></script>
   <script src="store.js" defer></script>
   <script src="app.js" defer></script>

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f7fa">
+  <meta name="description" content="Clarity is an interactive HCI prototype for making informed privacy choices while chatting.">
+  <title>Clarity — Your words. Your choice.</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="core.js" defer></script>
+  <script src="store.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <div id="app"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <div id="announcer" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+  <dialog id="modal" aria-labelledby="modal-title"></dialog>
+  <noscript><main class="noscript"><h1>Clarity needs JavaScript</h1><p>Enable JavaScript to use this interactive prototype. All conversation and privacy features run in your browser.</p></main></noscript>
+</body>
+</html>

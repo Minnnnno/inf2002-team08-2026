@@ -1,0 +1,10 @@
+tests/artifacts/
+__pycache__/
+*.pyc
+.sites-runtime/
+node_modules/
+*.zip
+*.tar.gz
+.openai/
+.env
+.env.*

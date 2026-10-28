@@ -33,6 +33,24 @@ Validated on 28 October 2026 with local Google Chrome through Python Playwright.
 
 These checks do **not** establish WCAG conformance, real-world privacy protection, or improved usability. Screen-reader testing, physical touch-device testing, Safari/Firefox testing and user evaluation remain necessary. The automatic scan covers the tested states rather than every possible dynamic state.
 
+## Changes made against INF2002 lecture guidance
+
+| Lecture point | WCAG | Change in the prototype | How it is checked |
+|---|---|---|---|
+| Human Abilities: presbyopia, x-height ("zooming alone may not solve it") | 1.4.4, 1.4.12 | Minimum visible text raised from 9–11 px to 12 px (57 rules). All-caps label letter-spacing reduced to 0.6 px. | `edge_checks.py` fails if any visible text on the four main routes is under 12 px |
+| Human Abilities: sarcopenia, fine motor precision | 2.5.8 Target Size (Minimum) | Inline text links (for example "How it works", the researcher link) have at least 24 px of clickable height | Manual audit script (all interactive targets at least 24 px, or wrapped in a full-row label) |
+| Human Abilities: contrast ratio at least 4.5:1 | 1.4.3 | No change needed. All text measured at least 4.5:1 on all four routes | Audit script, plus axe `color-contrast` |
+| Human Abilities: colour deficiency | 1.4.1 Use of Color | Flag state is carried by underline shape: wavy means needs review, dotted means kept. Both are now 2px thick in darker colours, because the 1px dotted "kept" line almost disappeared in greyscale. The active dashboard filter also gets an underline bar. Warnings use an icon and text. | Chrome vision emulation (deuteranopia, protanopia, achromatopsia), standard and strong modes |
+| Human Abilities: colour deficiency, presbyopia | 1.4.1, 1.4.11 Non-text Contrast | Optional **Stronger visual cues** setting under Privacy preferences, saved in this browser. It adds 3px underlines, dashed or dotted outlines on flags, darker card and button borders, and a 3px focus ring. The same rules apply automatically when the operating system requests more contrast (`prefers-contrast: more`). | `browser_smoke.py` (preview, save, persist, revert), axe on chat with strong cues on |
+| Human Abilities: protanopia, deuteranopia (red-green); low blue sensitivity | 1.4.1, 1.4.3 | Status colours (accent, warning, danger) are tuned to differ in **lightness**, not only hue, in both themes. Simulated worst-case colour difference (CIELAB ΔE, Machado 2009) improved from 9.3 to 16.3 in light mode and from 11.5 to 25.8 in dark mode, with every status colour still at least 4.5:1. Destructive confirm buttons carry a trash icon. In dark mode, kept details use a neutral tint (dotted underline) and flagged details an amber tint (wavy underline). | `edge_checks.py` simulates protanopia, deuteranopia and tritanopia for both themes and requires ΔE ≥ 15 and 4.5:1. Chrome vision emulation screenshots. |
+| Human Abilities: recognition over recall | 3.3.2 | Send button shows its shortcut as a tooltip ("Send (Ctrl+Enter)") and exposes `aria-keyshortcuts` | Manual |
+| Human Abilities: peripheral motion distracts | 2.3.3, 2.2.2 | Motion runs only in response to the user's action (nothing loops or pulses), and `prefers-reduced-motion` is respected | Code comment in the Motion block of `styles.css`, reduced-motion emulation |
+| Visual Design: F-pattern scanning, guide | none | The "Prototype" status badge moved from the far top-right to next to the page title | Screenshots |
+| Visual Design: proximity (Gestalt) | none | More space between a dashboard item's title group and its reuse/source row; review pill raised to 13 px | Screenshots |
+| Web Interaction: evaluate with industry tools | none | axe-core WCAG 2 A/AA scan on seven page states | `edge_checks.py` (axe file in the OS temp directory) |
+
+The W3C Nu HTML validator (validator.w3.org) has not been run yet. Run it by hand on `index.html`, `researcher.html` and `study-guide.html`, and record the result here.
+
 ## Test entry points
 
 - `tests/browser_smoke.py`: main participant and researcher workflows, screenshots and sample export.

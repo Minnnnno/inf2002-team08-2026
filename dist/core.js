@@ -11,7 +11,7 @@ window.ClarityCore = (() => {
     name: { label: 'Personal names', singular: 'Personal name', replacement: '[name]', reason: 'A name can identify a person, particularly when combined with contact, work, or location details.', context: 'A role such as “my colleague” often gives enough context. Name detection in this demo is deliberately limited.' },
     health: { label: 'Health information', singular: 'Health information', replacement: '[health condition]', reason: 'Health information can be personal even without a name. Consider whether that detail is needed for your request.', context: 'Removing a condition can make a question less useful. You can deliberately retain it or describe your needs more generally.' }
   };
-  const defaults = { warningMode: 'notice', reuseMode: 'ask', categories: Object.fromEntries(Object.keys(categories).map(k => [k, true])) };
+  const defaults = { warningMode: 'notice', reuseMode: 'ask', display: 'standard', categories: Object.fromEntries(Object.keys(categories).map(k => [k, true])) };
   const hash = text => { let n = 2166136261; for (let i=0;i<text.length;i++) n=Math.imul(n^text.charCodeAt(i),16777619); return (n>>>0).toString(36); };
   function detect(text, enabled = defaults.categories) {
     const found = [];

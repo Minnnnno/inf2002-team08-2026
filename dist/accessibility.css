@@ -1,0 +1,112 @@
+/* Shared control states; loaded after themes and colour presets. */
+:root {
+  --button-idle: #f1f6f2;
+  --button-hover: #e3eee6;
+  --control-border: #738078;
+}
+html[data-theme=dark] {
+  --button-idle: #303f36;
+  --button-hover: #3d5144;
+  --control-border: #82978a;
+}
+html[data-colour-preset=neutral] {
+  --button-idle: #eee;
+  --button-hover: #ddd;
+  --control-border: #737373;
+}
+html[data-theme=dark][data-colour-preset=neutral] {
+  --button-idle: #383838;
+  --button-hover: #484848;
+  --control-border: #949494;
+}
+:root:not([data-theme=dark]):not([data-colour-preset=neutral]) { --muted: #505c54; }
+/* Pale fills keep resting controls light. Text and borders carry contrast. */
+#clarity :is(.btn, .icon-btn, .nav-fab) {
+  background: var(--button-idle);
+  color: var(--ink);
+  border: 1px solid var(--control-border);
+}
+#clarity :is(.btn, .icon-btn, .nav-fab):hover {
+  background: var(--button-hover);
+  color: var(--ink);
+  border-color: var(--control-border);
+}
+#clarity :is(.btn.primary, .send-btn, .nav-fab, .colour-primary-sample) {
+  background: var(--soft-strong);
+  color: var(--accent-hover);
+  border: 1px solid var(--accent);
+}
+#clarity :is(.btn.primary, .send-btn, .nav-fab):hover {
+  background: var(--soft);
+  color: var(--accent-hover);
+  border-color: var(--accent);
+}
+#clarity .btn.danger {
+  background: var(--surface);
+  color: var(--danger);
+  border-color: var(--danger);
+}
+#clarity .btn.danger:hover {
+  background: var(--warning-bg);
+  color: var(--danger);
+  border-color: var(--danger);
+}
+#clarity .btn.text-danger { color: var(--danger); }
+html[data-theme=dark] #clarity :is(.btn.primary, .send-btn, .nav-fab, .colour-primary-sample) {
+  color: var(--accent);
+}
+#clarity :is(input:not([type=checkbox]):not([type=radio]), select, textarea, .composer-box, .search-box, .radio-card, .check-row) {
+  border-color: var(--control-border);
+}
+#clarity :is(.radio-card:has(input:checked), .composer-box:focus-within) {
+  border-color: var(--accent);
+}
+#clarity :is(button, a, input, select, textarea, [tabindex], [contenteditable]):focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+#clarity .composer:empty::before { color: var(--muted); }
+#clarity .composer-region { background: var(--bg); }
+.how-it-works {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+@media (forced-colors: active) {
+  :root, html:root[data-colour-preset], html[data-theme=dark] {
+    --ink: CanvasText;
+    --muted: CanvasText;
+    --bg: Canvas;
+    --surface: Canvas;
+    --sidebar: Canvas;
+    --accent: LinkText;
+    --accent-hover: LinkText;
+    --accent-text: LinkText;
+    --control-border: ButtonText;
+    --warning: CanvasText;
+    --warning-bg: Canvas;
+    --danger: CanvasText;
+    --success: CanvasText;
+    --soft: Canvas;
+    --soft-strong: Canvas;
+    --line: CanvasText;
+  }
+  #clarity :is(.btn, .btn.primary, .send-btn, .nav-fab, .icon-btn, .btn.danger, .colour-primary-sample) {
+    background: ButtonFace;
+    color: ButtonText;
+    border-color: ButtonText;
+  }
+  #clarity :is(button, a, input, select, textarea, [tabindex], [contenteditable]):focus-visible {
+    outline-color: Highlight;
+  }
+}
+
+#clarity .delete-icon { background: var(--surface); color: var(--danger); }
+#clarity .memory-card h2 { font-size: 15px; line-height: 1.5; }
+#clarity .tab-count { opacity: 1; }

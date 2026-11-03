@@ -1,7 +1,7 @@
 'use strict';
 (() => {
   const steps = [
-    ['Your message, your choice', 'Write your request here. Clarity checks for potentially personal information as you type. This tour uses a fictional email; nothing is sent or saved.', 'prompt'],
+    ['How Clarity works', 'Write your request here. Clarity checks for potentially personal information as you type. This tour uses a fictional email; nothing is sent or saved.', 'prompt'],
     ['Notice a personal detail', 'Underlined text is a detail worth reviewing. Select the example email to see why it was flagged. No matches does not mean a message is safe.', 'detail'],
     ['Choose what to share', 'An email address may be unnecessary for drafting a message. Try Mask information below. Keep unchanged is also your choice in a real chat.', 'review'],
     ['Change your mind', 'Masking replaces the detail in your draft. Try Undo masking to restore it. Draft changes can be reversed before sending.', 'undo'],
@@ -11,30 +11,28 @@
   dialog.className = 'guided-tour';
   dialog.setAttribute('aria-labelledby', 'tour-title');
   dialog.setAttribute('aria-describedby', 'tour-description');
+  dialog.innerHTML = '<h2 id="tour-title" class="sr-only">Guided tour</h2><p id="tour-description" class="sr-only">Practice reviewing fictional information.</p>';
   document.body.append(dialog);
   let step = 0, masked = false, returnFocus;
-  const SEEN_KEY = 'clarity.guidedTour.seen.v1';
-  let shownThisVisit = false;
+  let shownThisLoad = false;
   function startTour(trigger) {
     if (dialog.open) return;
     returnFocus = trigger; step = 0; masked = false;
     dialog.showModal(); render();
-    shownThisVisit = true;
-    try { localStorage.setItem(SEEN_KEY, 'true'); } catch { /* Still show only once in this tab if storage is unavailable. */ }
+    shownThisLoad = true;
   }
-  function offerFirstVisitTour() {
-    if (shownThisVisit || (location.hash && location.hash !== '#chat') || ClarityStore.study().active) return;
-    try { if (localStorage.getItem(SEEN_KEY) === 'true') return; } catch { /* Practice can run without storage. */ }
+  function offerTourOnLoad() {
+    if (shownThisLoad || ClarityStore.study().active) return;
     startTour(document.querySelector('[data-action="start-tour"]') || document.querySelector('#composer'));
   }
   function render() {
     const [title, description, target] = steps[step];
     const spot = name => target === name ? ' tour-spotlight' : '';
-    dialog.innerHTML = `<div class="tour-layout"><div class="tour-demo" aria-label="Fictional practice screen">
+    dialog.innerHTML = `<div class="tour-layout"><div class="tour-demo" role="group" aria-label="Fictional practice screen">
       <div class="tour-demo-header"><strong>Clarity</strong><span class="badge">Practice only</span></div>
       <div class="tour-demo-body"><div class="tour-dashboard${spot('dashboard')}"><strong>Privacy dashboard</strong><p>Shared in chats · Saved preferences · Possible inferences</p></div>
       <h2>What would you like help with?</h2><p class="muted">Learn the controls with a fictional example.</p>
-      <section class="tour-review${spot('review')}" ${step < 2 ? 'hidden' : ''}><strong>Email address detected</strong><p>A draft usually does not need your email. You can add it yourself later.</p><div class="tour-example-actions"><button type="button" class="btn primary" data-tour="mask">Mask information</button><button type="button" class="btn" data-tour="keep">Keep unchanged</button></div></section>
+      <section class="tour-review${spot('review')}" ${step < 2 ? 'hidden' : ''}><h3>Email address detected</h3><p>A draft usually does not need your email. You can add it yourself later.</p><div class="tour-example-actions"><button type="button" class="btn primary" data-tour="mask">Mask information</button><button type="button" class="btn" data-tour="keep">Keep unchanged</button></div></section>
       <div class="tour-prompt${spot('prompt')}"><strong>Your prompt</strong><p>My email is ${masked ? '<span class="tour-replacement">[email]</span>' : `<button type="button" class="tour-detail${spot('detail')}" data-tour="detail">alex@example.com</button>`}. Help me write a job application.</p><span class="muted">Example only — sending is disabled during practice.</span></div>
       <div class="tour-undo${spot('undo')}" ${step < 3 ? 'hidden' : ''}><button type="button" class="btn" data-tour="undo" ${masked ? '' : 'disabled'}>Undo masking</button><span>${masked ? 'Your email has been replaced with a placeholder.' : 'The original email is restored.'}</span></div>
       <p id="tour-result" role="status"></p></div></div>
@@ -64,6 +62,6 @@
   dialog.addEventListener('cancel', event => { event.preventDefault(); close(); });
   // Keep app-wide shortcuts from changing the real draft behind the tour.
   window.addEventListener('keydown', event => { if (dialog.open) event.stopPropagation(); }, true);
-  window.addEventListener('hashchange', () => { if (dialog.open) close(); offerFirstVisitTour(); });
-  offerFirstVisitTour();
+  window.addEventListener('hashchange', () => { if (dialog.open) close(); });
+  offerTourOnLoad();
 })();

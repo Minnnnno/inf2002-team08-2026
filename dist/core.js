@@ -67,15 +67,27 @@ window.ClarityCore = (() => {
     deletion:{name:'Remove and recover an item',family:'deletion',prompt:'',instruction:'Remove the sample neighbourhood from the active privacy profile. Explain what this affects. Then recover it after changing your mind.',success:'Delete and restore the profile item; explain that the original chat text remains. Researcher checks explanation.',expected:'manual'},
     preferences:{name:'Choose a reuse preference',family:'preferences',prompt:'',instruction:'Set the default so that personal information from earlier conversations requires your permission before it is used again. Try the example to check the behaviour.',success:'Save Ask before each reuse and observe a permission choice in the reuse demo.',expected:'manual'}
   };
+  function promptTopic(text) {
+    // Whole words avoid treating “keyboard” as “key” or “apiary” as “API”.
+    if (/\b(?:401|403|api|api_key|debug(?:ging)?|token|key|error|authorization)\b/i.test(text)) return 'debug';
+    if (/\b(?:leak|building manager|letter|email|polite|draft|message)\b/i.test(text)) return 'writing';
+    if (/\b(?:Punggol|Tampines|Bedok|Jurong|Bishan|Sengkang|Woodlands|Toa Payoh|restaurant|nearby|place to eat|dinner|neighbourhood)\b/i.test(text)) return 'nearby';
+    return null;
+  }
   function response(text, messages) {
-    const previous=messages.filter(m=>m.role==='user').map(m=>m.text).join(' ');
-    if (/401|403|API|debug|token|key|error/i.test(text+' '+previous)) {
-      if(messages.filter(m=>m.role==='user').length>1) return 'For example, a request can fail when the Authorization header is missing. Use a placeholder such as “Bearer [API key]” in examples, check the expected header format, and test in your own development environment. Keep the actual credential out of screenshots and shared logs.';
+    // Only refer to earlier context for a recognisable follow-up. A new task wins.
+    const prior=messages.filter(m=>m.role==='user');
+    if(prior.at(-1)?.text===text) prior.pop();
+    const current=promptTopic(text);
+    const followup=/\b(?:example|explain more|more detail|show me|why|firmer|casual|cheaper|budget|vegetarian)\b/i.test(text);
+    const topic=current||(followup ? promptTopic(prior.at(-1)?.text||'') : null);
+    if (topic==='debug') {
+      if(!current&&prior.length) return 'For example, a request can fail when the Authorization header is missing. Use a placeholder such as “Bearer [API key]” in examples, check the expected header format, and test in your own development environment. Keep the actual credential out of screenshots and shared logs.';
       return 'A 401 or 403 response often points to an authentication or permission issue.\n\n1. Check that the required Authorization header is present.\n2. Confirm that the key has permission for the requested action.\n3. Check whether the key has expired.\n\nYou can describe the error and request structure without sharing the actual key. Would a small example help?';
     }
-    if(/leak|building manager|letter|email|polite/i.test(text+' '+previous)) return 'Here’s a draft you can adapt:\n\nHello, I’m following up about a water leak in the building. Could you please arrange an inspection and let me know the next steps? Thank you for your help.\n\nYou can add your name and contact details when you send the message to the building manager. Would you like a firmer or more casual tone?';
-    if(/Punggol|restaurant|nearby|place to eat|dinner|neighbourhood/i.test(text+' '+previous)) return 'For this fictional example, try Willow Table for a quiet meal, Harbour Bowl for a casual option, or The Little Courtyard for outdoor seating. These places are invented for the study.\n\nA neighbourhood is useful context; you do not need to provide your exact home address. Tell me a budget or food preference to narrow the example.';
+    if(topic==='writing') return 'Here’s a draft you can adapt:\n\nHello, I’m following up about a water leak in the building. Could you please arrange an inspection and let me know the next steps? Thank you for your help.\n\nYou can add your name and contact details when you send the message to the building manager. Would you like a firmer or more casual tone?';
+    if(topic==='nearby') return 'For this fictional example, try Willow Table for a quiet meal, Harbour Bowl for a casual option, or The Little Courtyard for outdoor seating. These places are invented for the study.\n\nA neighbourhood is useful context; you do not need to provide your exact home address. Tell me a budget or food preference to narrow the example.';
     return 'I can help you work through this example. Start with the task, the outcome you want, and the context that changes the answer. You can leave out identifiers and add them later if needed.\n\nThis is a scripted demonstration, so I cannot answer arbitrary questions accurately. Try a debugging, local-planning, or writing example to explore the full flow.';
   }
-  return {clone,categories,defaults,detect,blankChat,seed,scenarios,response};
+  return {clone,categories,defaults,detect,blankChat,seed,scenarios,promptTopic,response};
 })();

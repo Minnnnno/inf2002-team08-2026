@@ -1,5 +1,7 @@
 # Verification record
 
+**3 November 2026 update:** Typed prompts, lighter idle controls, WCAG 2.2 AA checks and current Nu standards validation are documented in [the accessibility audit](ACCESSIBILITY-AUDIT.md). The 28 October record below is historical; the newer audit supersedes its pending Nu-validation note.
+
 Validated on 28 October 2026 with local Google Chrome through Python Playwright. Tests use fictional data and isolated browser contexts. No real participants or real GPT services were involved.
 
 ## Functional checks passed

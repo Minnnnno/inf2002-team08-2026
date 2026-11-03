@@ -32,8 +32,9 @@ def cvd_worst(tokens):
     names=list(tokens);return min(math.dist(_lab(_sim(tokens[a],t)),_lab(_sim(tokens[b],t))) for t in CVD for i,a in enumerate(names) for b in names[i+1:])
 with sync_playwright() as p:
     b=p.chromium.launch(executable_path=r'C:\Program Files\Google\Chrome\Application\chrome.exe',headless=True)
-    ctx=b.new_context(viewport={'width':1440,'height':1000})
+    ctx=b.new_context(viewport={'width':1440,'height':1000},reduced_motion='reduce')
     page=ctx.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+    ctx.add_init_script("document.addEventListener('DOMContentLoaded',()=>document.querySelector('.guided-tour[open] [data-tour=close]')?.click(),{once:true})")
     page.goto(base)
     page.locator('#composer').fill('Ask alex@example.test and alex@example.test about the leak.')
     page.locator('.flag').nth(1).click()
@@ -109,9 +110,9 @@ with sync_playwright() as p:
             v=page.evaluate('async()=>{const r=await axe.run(document,{runOnly:{type:"tag",values:["wcag2a","wcag2aa","wcag21aa"]}});return r.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)}));}')
             if v: violations.append({'path':path,'violations':v})
         page.goto(base+'/#chat');page.evaluate("document.documentElement.classList.add('cues-strong')")
-        page.get_by_role('button',name='Draft a message').click()
+        page.locator('#composer').fill('Help me write a message to my building manager about a leak. My name is Maya Tan, my email is maya@example.test, and my phone is +65 8123 4567. Keep the tone polite.')
         page.add_script_tag(path=str(axe))
-        v=page.evaluate('async()=>{const r=await axe.run(document,{runOnly:{type:"tag",values:["wcag2a","wcag2aa","wcag21aa"]}});return r.violations.map(v=>v.id)}')
+        v=page.evaluate('async()=>{const r=await axe.run(document,{runOnly:{type:"tag",values:["wcag2a","wcag2aa","wcag21aa"]}});return r.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))}))}')
         if v: violations.append({'path':'chat (stronger cues)','violations':v})
         page.evaluate("localStorage.setItem('clarity.theme','dark')")
         for path in ['/#chat','/#dashboard','/#preferences','/#help']:
@@ -152,7 +153,7 @@ with sync_playwright() as p:
         assert ctx.request.get(base+'/'+f).status==200,f
     local=(pathlib.Path(__file__).resolve().parents[1]/'dist'/'index.html').as_uri()
     page.goto(local)
-    page.get_by_role('button',name='Debug an error').click()
+    page.locator('#composer').fill('Why does my request return 401? API_KEY = sk-test-FICTIONAL7ALPHA. Please explain the error.')
     page.get_by_role('button',name='1 detail to review').click()
     page.get_by_role('button',name='Mask information',exact=True).click()
     page.get_by_role('button',name='Send',exact=True).click()

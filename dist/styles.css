@@ -574,7 +574,7 @@ small {
    stroke-width: 1.4
 }
 
-.welcome h1 {
+.welcome h2 {
    font-size: clamp(29px, 2.8vw, 40px);
    letter-spacing: -1.6px;
    font-weight: 600;
@@ -582,7 +582,7 @@ small {
    line-height: 1.2
 }
 
-.welcome h1 span {
+.welcome h2 span {
    color: var(--accent)
 }
 
@@ -1947,7 +1947,7 @@ dialog::backdrop {
       padding: 14px 11px
    }
 
-   .welcome h1 {
+   .welcome h2 {
       font-size: 31px
    }
 
@@ -2099,7 +2099,7 @@ dialog::backdrop {
       border-radius: 15px
    }
 
-   .welcome h1 {
+   .welcome h2 {
       font-size: 32px;
       letter-spacing: -1.2px
    }
@@ -2525,7 +2525,7 @@ dialog::backdrop {
    display: none
 }
 
-.welcome h1 {
+.welcome h2 {
    font-size: 34px;
    letter-spacing: -1px;
    font-weight: 550
@@ -2872,7 +2872,7 @@ dialog::backdrop {
       margin-top: 35px
    }
 
-   .welcome h1 {
+   .welcome h2 {
       font-size: 29px
    }
 
@@ -3901,4 +3901,31 @@ html[data-theme=dark] .flag.kept {
 
 html[data-theme=dark].cues-strong :is(.badge, .btn:not(.primary), .tab, .radio-card, .setting-card, .memory-card, .check-row) {
    border-color: #8a948e
+}
+.brand .mini { display: block; }
+
+/* Scanning: heading and short introduction share the prompt's left reading edge. */
+.messages {
+   max-width: none;
+   margin-left: 0;
+   margin-right: 0;
+}
+
+.welcome {
+   max-width: none;
+   margin-left: 0;
+   margin-right: 0;
+   text-align: left;
+}
+
+.welcome > p {
+   max-width: 52ch;
+   line-height: 1.7;
+}
+
+@media (max-width: 700px) {
+   .conversation {
+      padding-left: 14px;
+      padding-right: 14px;
+   }
 }

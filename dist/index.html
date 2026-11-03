@@ -27,14 +27,15 @@
   <script src="app.js" defer></script>
   <script src="tour.js" defer></script>
   <link rel="stylesheet" href="tour.css">
+  <link rel="stylesheet" href="accessibility.css">
 </head>
-<body>
+<body id="clarity">
   <a class="skip-link" href="#main">Skip to main content</a>
   <div id="app"></div>
   <div id="nav-widget" class="nav-widget"></div>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
   <div id="announcer" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
-  <dialog id="modal" aria-labelledby="modal-title"></dialog>
-  <noscript><main class="noscript"><h1>Clarity needs JavaScript</h1><p>Enable JavaScript to use this interactive prototype. All conversation and privacy features run in your browser.</p></main></noscript>
+  <dialog id="modal" aria-labelledby="modal-title"><h2 id="modal-title" class="sr-only">Clarity dialog</h2></dialog>
+  <noscript><div class="noscript"><h1>Clarity needs JavaScript</h1><p>Enable JavaScript to use this interactive prototype. All conversation and privacy features run in your browser.</p></div></noscript>
 </body>
 </html>

@@ -1,0 +1,31 @@
+.chat-layout { display: grid; grid-template-columns: minmax(0, 1fr) 330px; align-items: start; }
+.chat-layout > .chat-main { width: 100%; min-width: 0; }
+.suggestions-sidebar { position: sticky; top: 0; height: calc(100dvh - 78px); overflow-y: auto; padding: 26px 20px; border-left: 1px solid var(--line); background: var(--surface); }
+.suggestions-heading h2 { margin: 7px 0 12px; font-size: 18px; line-height: 1.5; }
+.suggestions-count { display: inline-block; padding: 0 8px; border-radius: 20px; background: var(--warning-bg); color: var(--warning); font-size: 14px; }
+.suggestion-hint, .suggestions-empty p { font-size: 12px; color: var(--muted); line-height: 1.7; }
+.suggestion-hint { margin: 10px 0 16px; }
+.suggestion-group h3 { display: flex; justify-content: space-between; margin: 24px 0 10px; font-size: 13px; color: var(--muted); }
+.suggestion-card { margin-bottom: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); overflow-wrap: anywhere; }
+.suggestion-select { display: block; width: 100%; padding: 0; border: 0; background: transparent; text-align: left; color: var(--ink); cursor: pointer; }
+.suggestion-original { display: block; margin-bottom: 8px; text-decoration: underline wavy var(--warning); text-underline-offset: 4px; line-height: 1.7; }
+.suggestion-proposed { display: block; padding: 8px; border-radius: 6px; color: var(--accent); background: var(--soft); font-size: 13px; }
+.suggestion-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
+.suggestion-actions .btn { min-height: 32px; padding: 6px 9px; font-size: 12px; }
+.suggestions-empty { padding: 24px 0; color: var(--ink); }
+.suggestion-selected { outline: 2px solid var(--accent); outline-offset: 3px; }
+.suggestion-popover { position: fixed; z-index: 1200; overflow-y: auto; padding: 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--ink); box-shadow: 0 12px 45px #0003; overflow-wrap: anywhere; }
+.suggestion-popover-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.suggestion-popover h2 { margin: 0; font-size: 16px; }
+.suggestion-popover > p { margin: 12px 0; font-size: 13px; line-height: 1.7; }
+.suggestion-popover .suggestion-hint { margin-bottom: 0; font-size: 12px; }
+.suggestion-replacement { padding: 10px; border-radius: 8px; background: var(--bg); font-size: 13px; line-height: 1.8; }
+.suggestion-replacement del { color: var(--muted); }
+.suggestion-replacement strong { color: var(--accent); }
+.ignored-detail { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+.ignored-detail > span { min-width: 0; flex: 1; }
+@media(max-width: 1100px) {
+  .chat-layout { display: block; }
+  .suggestions-sidebar { position: static; width: 100%; height: auto; max-height: none; padding: 24px; border-left: 0; border-top: 1px solid var(--line); }
+  .suggestion-group { max-width: 680px; margin: 0 auto; }
+}

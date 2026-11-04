@@ -647,6 +647,29 @@ small {
    padding: 0 clamp(22px, 4vw, 68px) 21px
 }
 
+.prompt-warning {
+   display: flex;
+   align-items: flex-start;
+   gap: 10px;
+   margin-bottom: 12px;
+   padding: 12px 14px;
+   border: 1px solid currentColor;
+   border-radius: 10px;
+   background: var(--warning-bg);
+   color: var(--warning);
+   font-size: 13px;
+   line-height: 1.6;
+}
+
+.prompt-warning[hidden] {
+   display: none;
+}
+
+.prompt-warning .icon {
+   flex-shrink: 0;
+   margin-top: 2px;
+}
+
 .composer-box {
    border: 1px solid #cec7dc;
    border-radius: 18px;

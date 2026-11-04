@@ -26,12 +26,14 @@ For a static hosting service, use **`dist/` as the publish directory** and inclu
 ## Using the prototype
 
 1. **How it works** opens on every fresh page load, except during a prepared study task. Complete it or choose **Skip tour**. Reopen it using **How it works** below the prompt box. Navigating between application screens does not reopen it automatically.
-2. Type a supplied example into **Your prompt**. There are no preset prompt cards.
-3. Select an underlined detail or the **Review** control near Send. Choose **Mask information**, **Generalise** where available, **Keep unchanged**, or **Edit manually**. Multiple details can be reviewed together.
+2. Type a supplied example into **Your prompt**. A warning appears automatically above the prompt when potentially sensitive information is detected, and disappears when no matches remain. There are no preset prompt cards.
+3. Select an underlined detail to open its suggestion popover: **Apply** masks it, **Ignore once** keeps that occurrence, and **Ignore always** suppresses warnings for that exact detail in this browser. The live review sidebar groups pending suggestions by category and supports **Apply all masking suggestions**; it appears below the editor on smaller screens. The **Review** control near Send still offers detailed explanations, generalisation and manual editing.
 4. Use **Undo** to reverse a draft change, then select **Send**. Sending adds the prompt and a scripted response to the conversation.
 5. Open the top-left menu or floating shield to access the privacy dashboard, privacy preferences, settings and help. Drafts and conversations survive navigation and reload.
 
 The dashboard supports searching and filtering profile entries, inspecting their source, correcting values, changing reuse rules, deleting, restoring and permanently removing recoverable profile copies. Removing a profile entry leaves its original conversation text intact. Privacy preferences include notice/pause behaviour, detection categories, default reuse and an interactive reuse example; choose **Save preferences** to apply them.
+
+Under **Privacy preferences → Ignored details**, use **Restore warnings** to reverse an Ignore always choice. These exact-detail exceptions persist across conversations and reloads in this browser. Restoring warnings applies immediately.
 
 ### Example prompts to type
 
@@ -106,6 +108,7 @@ Keep the local server running in one terminal, then run the following in another
 
 ```powershell
 python tests/browser_smoke.py
+python tests/suggestions_checks.py
 python tests/edge_checks.py
 python tests/accessibility_audit.py
 python tests/vision_checks.py
@@ -114,6 +117,7 @@ python tests/vision_checks.py
 | Script | Checks |
 |---|---|
 | `browser_smoke.py` | Main chat, privacy, research, keyboard, persistence and mobile workflows |
+| `suggestions_checks.py` | Anchored popovers, live sidebar, ignore choices, batch masking, undo and mobile layout |
 | `edge_checks.py` | Editing/deletion edge cases, research gating, optional axe scans, reflow and mathematical colour-vision checks |
 | `accessibility_audit.py` | Requires axe; scans themes, presets and dynamic states, measures text/border/focus contrast, and saves rendered HTML snapshots |
 | `vision_checks.py` | Chrome colour-vision simulations, preset persistence and reading alignment at desktop/mobile widths |

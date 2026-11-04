@@ -37,7 +37,8 @@ with sync_playwright() as p:
     ctx.add_init_script("document.addEventListener('DOMContentLoaded',()=>document.querySelector('.guided-tour[open] [data-tour=close]')?.click(),{once:true})")
     page.goto(base)
     page.locator('#composer').fill('Ask alex@example.test and alex@example.test about the leak.')
-    page.locator('.flag').nth(1).click()
+    page.get_by_role('button',name='2 details to review').click()
+    page.locator('.issue-tab').nth(1).click()
     page.get_by_role('button',name='Keep unchanged',exact=True).click()
     page.get_by_role('button',name='Mask information',exact=True).click()
     expect(page.locator('.flag')).to_have_count(1)
@@ -52,7 +53,7 @@ with sync_playwright() as p:
 
     page.locator('#composer').fill('Popular restaurants near Punggol Residences Block 5.')
     expect(page.locator('.flag')).to_have_count(1)
-    page.locator('.flag').click()
+    page.get_by_role('button',name='1 detail to review').click()
     page.get_by_role('button',name='Generalise to').click()
     assert page.locator('#composer').inner_text()=='Popular restaurants near Punggol.'
     expect(page.locator('.flag.kept')).to_have_count(1)
@@ -149,7 +150,7 @@ with sync_playwright() as p:
         print(f'PASS {theme}: status colours distinguishable for protanopia/deuteranopia/tritanopia (worst dE {worst:.1f}), all >= 4.5:1')
     page.evaluate("localStorage.removeItem('clarity.theme')")
 
-    for f in ['index.html','researcher.html','study-guide.html','design-notes.html','styles.css','docs.css','core.js','store.js','app.js','researcher.js','favicon.svg']:
+    for f in ['index.html','researcher.html','study-guide.html','design-notes.html','styles.css','docs.css','core.js','store.js','suggestions.js','suggestions.css','app.js','researcher.js','favicon.svg']:
         assert ctx.request.get(base+'/'+f).status==200,f
     local=(pathlib.Path(__file__).resolve().parents[1]/'dist'/'index.html').as_uri()
     page.goto(local)
